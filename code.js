@@ -240,7 +240,7 @@ Code.LANG = Code.getLang();
  * List of tab names.
  * @private
  */
-Code.TABS_ = ['blocks', 'javascript', 'php', 'python', 'dart', 'lua', 'xml'];
+Code.TABS_ = ['blocks', /*'javascript', 'php', */'python', /*'dart', 'lua', */'xml'];
 
 Code.selected = 'blocks';
 
@@ -409,12 +409,16 @@ Code.init = function() {
        toolbox: toolboxXml,
        zoom:
            {controls: true,
-            wheel: true}
+            wheel: true},
+        oneBasedIndex: false
       });
+      var workspaceText = document.getElementById('workspaceBlocks').outerHTML;
+      var workspaceXml = Blockly.Xml.textToDom(workspaceText);
+      Blockly.Xml.domToWorkspace(workspaceXml, Code.workspace);
 
   // Add to reserved word list: Local variables in execution environment (runJS)
   // and the infinite loop detection function.
-  Blockly.JavaScript.addReservedWords('code,timeouts,checkTimeout');
+  //Blockly.JavaScript.addReservedWords('code,timeouts,checkTimeout');
 
   Code.loadBlocks('');
 

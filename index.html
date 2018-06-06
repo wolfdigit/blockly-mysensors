@@ -5,15 +5,96 @@
   <meta name="google" value="notranslate">
   <title>Blockly Demo:</title>
   <link rel="stylesheet" href="style.css">
-  <script src="appengine/storage.js"></script>
+  <!--
+  <script src="/storage.js"></script>
+  <script src="../../javascript_compressed.js"></script>
+  
+  <script src="../../php_compressed.js"></script>
+  <script src="../../lua_compressed.js"></script>
+  <script src="../../dart_compressed.js"></script>
+  -->
   <script src="blockly_compressed.js"></script>
   <script src="blocks_compressed.js"></script>
-  <script src="javascript_compressed.js"></script>
   <script src="python_compressed.js"></script>
-  <script src="php_compressed.js"></script>
-  <script src="lua_compressed.js"></script>
-  <script src="dart_compressed.js"></script>
   <script src="code.js"></script>
+  <script>
+    Blockly.Blocks['sensor_get'] = {
+      init: function() {
+        this.appendDummyInput()
+            .appendField("value of (nodeId")
+            .appendField(new Blockly.FieldNumber(1, 0, 254), "nodeId")
+            .appendField(", sensorId")
+            .appendField(new Blockly.FieldNumber(1, 0, 255), "sensorId")
+            .appendField(")");
+        this.setOutput(true, "Number");
+        this.setColour(60);
+        this.setTooltip("");
+        this.setHelpUrl("");
+      }
+    };
+    Blockly.Blocks['sensor_set'] = {
+      init: function() {
+        this.appendValueInput("value")
+            .setCheck("Number")
+            .appendField("set value of ( nodeId")
+            .appendField(new Blockly.FieldNumber(1, 0, 254), "nodeId")
+            .appendField(", sensorId")
+            .appendField(new Blockly.FieldNumber(1, 0, 255), "sensorId")
+            .appendField(") to be");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(60);
+        this.setTooltip("");
+        this.setHelpUrl("");
+      }
+    };
+    Blockly.Blocks['publish'] = {
+      init: function() {
+        this.appendDummyInput()
+            .appendField("when sensor (")
+            .appendField(new Blockly.FieldDropdown([["n_id","N_ID"]]), "pname1")
+            .appendField(", ")
+            .appendField(new Blockly.FieldDropdown([["s_id","S_ID"]]), "pname2")
+            .appendField(") value changed to")
+            .appendField(new Blockly.FieldDropdown([["val","VAL"]]), "pname3");
+        this.appendStatementInput("MAIN")
+            .setCheck(null);
+        this.setColour(60);
+        this.setTooltip("");
+        this.setHelpUrl("");
+      }
+    };
+    Blockly.BlockSvg.START_HAT = true;
+    Blockly.Python.INDENT = "    ";
+    Blockly.Python['sensor_set'] = function(block) {
+      var number_nodeid = block.getFieldValue('nodeId');
+      var number_sensorid = block.getFieldValue('sensorId');
+      var value_value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
+      // TODO: Assemble Python into code variable.
+      var code = 'self.set('+number_nodeid+', '+number_sensorid+', '+value_value+')\n';
+      return code;
+    };
+    Blockly.Python['sensor_get'] = function(block) {
+      var number_nodeid = block.getFieldValue('nodeId');
+      var number_sensorid = block.getFieldValue('sensorId');
+      // TODO: Assemble Python into code variable.
+      var code = 'self.get('+number_nodeid+', '+number_sensorid+')';
+      // TODO: Change ORDER_NONE to the correct strength.
+      return [code, Blockly.Python.ORDER_FUNCTION_CALL];
+    };
+    Blockly.Python['publish'] = function(block) {
+      var statements_name = Blockly.Python.statementToCode(block, 'MAIN');
+      // TODO: Assemble Python into code variable.
+      var code = '#{head1}\n'
+               + 'class MyPublisher(object):\n'
+               + '#{head2}\n'
+               + '    def onChange(self, n_id, s_id, val):\n'
+               + "    "+statements_name.replace('\n    ', '\n        ')
+               + '\n'
+               + '#{tail}\n';
+      return code;
+    }
+  </script>
 </head>
 <body>
   <table width="100%" height="100%">
@@ -34,16 +115,20 @@
           <tr id="tabRow" height="1em">
             <td id="tab_blocks" class="tabon">...</td>
             <td class="tabmin">&nbsp;</td>
+            <!--
             <td id="tab_javascript" class="taboff">JavaScript</td>
             <td class="tabmin">&nbsp;</td>
+            -->
             <td id="tab_python" class="taboff">Python</td>
             <td class="tabmin">&nbsp;</td>
+            <!--
             <td id="tab_php" class="taboff">PHP</td>
             <td class="tabmin">&nbsp;</td>
             <td id="tab_lua" class="taboff">Lua</td>
             <td class="tabmin">&nbsp;</td>
             <td id="tab_dart" class="taboff">Dart</td>
             <td class="tabmin">&nbsp;</td>
+            -->
             <td id="tab_xml" class="taboff">XML</td>
             <td class="tabmax">
               <button id="trashButton" class="notext" title="...">
@@ -74,6 +159,11 @@
   <textarea id="content_xml" class="content" wrap="off"></textarea>
 
   <xml id="toolbox" style="display: none">
+    <category name="MySensors" colour="60">
+      <block type="sensor_get"></block>
+      <block type="sensor_set"></block>
+    </category>
+    <sep></sep>
     <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
@@ -369,6 +459,13 @@
     <category name="%{BKY_CATVARIABLES}" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE"></category>
     <category name="%{BKY_CATFUNCTIONS}" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>
   </xml>
-
+  <xml id="workspaceBlocks" style="display:none">
+    <variables>
+      <variable type="" id="7Zw?!6LzL*npHnVwKa^E">n_id</variable>
+      <variable type="" id="`VGAL?~kJMkE4(3d*:a:">s_id</variable>
+      <variable type="" id="4opRUOZm}PiAGfnnKY=A">val</variable>
+    </variables>
+    <block type="publish" editable="false" deletable="false" id="JTb-etQE;7hVr)E}u6wB" x="0" y="0"></block>
+  </xml>
 </body>
 </html>
