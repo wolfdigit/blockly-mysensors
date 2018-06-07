@@ -240,7 +240,7 @@ Code.LANG = Code.getLang();
  * List of tab names.
  * @private
  */
-Code.TABS_ = ['blocks', /*'javascript', 'php', */'python', /*'dart', 'lua', */'xml'];
+Code.TABS_ = ['blocks', /*'javascript', 'php', */'python', 'pythonEd', /*'dart', 'lua', */'xml'];
 
 Code.selected = 'blocks';
 
@@ -431,7 +431,7 @@ Code.init = function() {
 
   Code.bindClick('trashButton',
       function() {Code.discard(); Code.renderContent();});
-  Code.bindClick('runButton', Code.runJS);
+  Code.bindClick('runButton', Code.uploadPython);
   // Disable the link button if page isn't backed by App Engine storage.
   var linkButton = document.getElementById('linkButton');
   if ('BlocklyStorage' in window) {
@@ -494,7 +494,7 @@ Code.initLanguage = function() {
 
   // Inject language strings.
   document.title += ' ' + MSG['title'];
-  document.getElementById('title').textContent = MSG['title'];
+  //document.getElementById('title').textContent = MSG['title'];
   document.getElementById('tab_blocks').textContent = MSG['blocks'];
 
   document.getElementById('linkButton').title = MSG['linkTooltip'];
