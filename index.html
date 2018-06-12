@@ -101,8 +101,8 @@
       xhttp.open("POST", "/upload", true);
       xhttp.onreadystatechange = function() {
         if (xhttp.readyState === XMLHttpRequest.DONE) {
-          console.log(xhttp.status);
-          console.log(xhttp.responseText);
+          console.log("xhttp status: "+xhttp.status);
+          console.log("xhttp response:"+xhttp.responseText);
         }
       };
       xhttp.send("code="+btoa(code));
