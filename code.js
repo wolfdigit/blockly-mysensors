@@ -32,6 +32,7 @@ var Code = {};
  * Lookup for names of supported languages.  Keys should be in ISO 639 format.
  */
 Code.LANGUAGE_NAME = {
+  /*
   'ar': 'العربية',
   'be-tarask': 'Taraškievica',
   'br': 'Brezhoneg',
@@ -40,7 +41,9 @@ Code.LANGUAGE_NAME = {
   'da': 'Dansk',
   'de': 'Deutsch',
   'el': 'Ελληνικά',
+  */
   'en': 'English',
+  /*
   'es': 'Español',
   'et': 'Eesti',
   'fa': 'فارسی',
@@ -73,6 +76,7 @@ Code.LANGUAGE_NAME = {
   'tlh': 'tlhIngan Hol',
   'tr': 'Türkçe',
   'uk': 'Українська',
+  */
   'vi': 'Tiếng Việt',
   'zh-hans': '简体中文',
   'zh-hant': '正體中文'
