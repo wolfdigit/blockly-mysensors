@@ -86,8 +86,8 @@
   </script>
   <script>
     Code.uploadPython = function() {
-      alert("# cat - > /root/pymygw-new/userLogic.py \n 貼上程式碼 \n ctrl-D");
-      return;
+      //alert("# cat - > /root/pymygw-new/userLogic.py \n 貼上程式碼 \n ctrl-D");
+      //return;
       if (Code.selected=='pythonEd') {
         dom = document.getElementById('content_pythonEd');
         //console.log(dom.value);
@@ -98,8 +98,14 @@
       }
       console.log(code);
       var xhttp = new XMLHttpRequest();
-      xhttp.open("POST", "do_upload.py", true);
-      xhttp.send("code="+btoa(code)); 
+      xhttp.open("POST", "/upload", true);
+      xhttp.onreadystatechange = function() {
+        if (xhttp.readyState === XMLHttpRequest.DONE) {
+          console.log(xhttp.status);
+          console.log(xhttp.responseText);
+        }
+      };
+      xhttp.send("code="+btoa(code));
     };
   </script>
 </head>
